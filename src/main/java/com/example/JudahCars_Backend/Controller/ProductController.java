@@ -13,10 +13,15 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @GetMapping("/product")
-    public List<?> getAll() {
-        return service.getAllProducts();
+    @GetMapping("/products")
+    public List<?> getCars(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String make
+    ) {
+        return service.getAllProducts(type, make);
     }
+
+
 
 
 }
