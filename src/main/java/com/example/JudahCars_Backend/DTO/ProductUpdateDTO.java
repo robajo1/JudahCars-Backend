@@ -1,18 +1,16 @@
-package com.example.JudahCars_Backend.Model;
+package com.example.JudahCars_Backend.DTO;
 
-import jakarta.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "products")
 @Data
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductUpdateDTO {
     private String type;
     private String make;
     private String model;
@@ -21,27 +19,12 @@ public class Product {
     private Integer mileage;
     private String fuelType;
     private String transmission;
-    @Column(columnDefinition = "TEXT")
     private String description;
     private String location;
-
     private String imageUrl1;
     private String imageUrl2;
     private String imageUrl3;
-
     private String sketchfabEmbed;
-
-    @ManyToOne
-    @JoinColumn(name = "seller_id", referencedColumnName = "userId")
-    private Users seller;
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
 
     public String getType() {
         return type;
@@ -154,12 +137,5 @@ public class Product {
     public void setSketchfabEmbed(String sketchfabEmbed) {
         this.sketchfabEmbed = sketchfabEmbed;
     }
-
-    public Users getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Users seller) {
-        this.seller = seller;
-    }
 }
+

@@ -1,6 +1,8 @@
 package com.example.JudahCars_Backend.Controller;
 
+import com.example.JudahCars_Backend.DTO.ProductCreateDTO;
 import com.example.JudahCars_Backend.DTO.ProductSearchDTO;
+import com.example.JudahCars_Backend.DTO.ProductUpdateDTO;
 import com.example.JudahCars_Backend.Model.Product;
 import com.example.JudahCars_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,26 @@ public class ProductController {
             return input;
         }
         return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+
+
+
+    @PostMapping("/products")
+    public String addProduct(@RequestBody ProductCreateDTO product){
+        service.addProduct(product);
+        return "added";
+    }
+
+    @DeleteMapping("/products/{id}")
+    public String removeProduct(@PathVariable int id){
+        service.removeProduct(id);
+        return "removed";
+    }
+
+    @PatchMapping("/products/{id}")
+    public String updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
+        service.updateProduct(id,product);
+        return "updated";
     }
 
 
