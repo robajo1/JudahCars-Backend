@@ -28,16 +28,17 @@ public class ProductController {
             @RequestParam(required = false) Integer mileage,
             @RequestParam(required = false) String fuelType,
             @RequestParam(required = false) String transmission,
-            @RequestParam(required = false) String type
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String query
     ) {
-        ProductSearchDTO dto = new ProductSearchDTO(toProperCase(make), toProperCase(model), year, price, mileage, toProperCase(fuelType), toProperCase(transmission),type == null ? type : type.toLowerCase());
+        ProductSearchDTO dto = new ProductSearchDTO(toProperCase(make), toProperCase(model),toProperCase(query), year, price, mileage, toProperCase(fuelType), toProperCase(transmission),type == null ? type : type.toLowerCase());
         return service.searchProducts(dto);
     }
     private static String toProperCase(String input) {
         if (input == null || input.isEmpty()) {
             return input;
         }
-        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+        return input.toLowerCase();
     }
 
 
