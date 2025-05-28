@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 public class ProductSearchDTO {
     private String make;
     private String model;
+    private String query;
     private Integer year;
     private BigDecimal price;
     private Integer mileage;
@@ -13,10 +14,11 @@ public class ProductSearchDTO {
     private String transmission;
     private String type;
 
-    public ProductSearchDTO(String make, String model, Integer year, BigDecimal price, Integer mileage, String fuelType, String transmission, String type) {
+    public ProductSearchDTO(String make, String model,String query, Integer year, BigDecimal price, Integer mileage, String fuelType, String transmission, String type) {
         this.make = make;
         this.type=type;
         this.model = model;
+        this.query=query;
         this.year = year;
         this.price = price;
         this.mileage = mileage;
@@ -46,6 +48,13 @@ public class ProductSearchDTO {
 
     public void setModel(String model) {
         this.model = model;
+    }
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     public Integer getYear() {

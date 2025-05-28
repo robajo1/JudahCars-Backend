@@ -17,6 +17,6 @@ public class Users {
     private String email;
     @JsonIgnore
     private String password;
-    private Boolean isSeller;
+    private String role;
     private String phone;
 }

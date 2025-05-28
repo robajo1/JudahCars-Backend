@@ -1,8 +1,6 @@
 package com.example.JudahCars_Backend.DTO;
 
-
 import com.example.JudahCars_Backend.Model.Product;
-import com.example.JudahCars_Backend.DTO.ProductSearchDTO;
 import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.Predicate;
@@ -14,16 +12,25 @@ public class ProductSpecification {
             Predicate predicate = cb.conjunction();
 
             if (searchDTO.getMake() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("make"), searchDTO.getMake()));
+                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("make")), searchDTO.getMake()));
             }
-            if(searchDTO.getType() != null){
-                predicate = cb.and(predicate, cb.equal(root.get("type"), searchDTO.getType()));
+            if (searchDTO.getType() != null) {
+                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("type")), searchDTO.getType()));
             }
             if (searchDTO.getModel() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("model"), searchDTO.getModel()));
+                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("model")), searchDTO.getModel()));
+            }
+            if (searchDTO.getQuery() != null && !searchDTO.getQuery().trim().isEmpty()) {
+                String searchTerm = "%" + searchDTO.getQuery().toLowerCase() + "%";
+
+                Predicate makeLikePredicate = cb.like(cb.lower(root.get("make")), searchTerm);
+
+                Predicate modelLikePredicate = cb.like(cb.lower(root.get("model")), searchTerm);
+                Predicate combinedLikePredicate = cb.or(makeLikePredicate, modelLikePredicate);
+                predicate = cb.and(predicate, combinedLikePredicate);
             }
             if (searchDTO.getYear() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("year"), searchDTO.getYear()));
+                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("year")), searchDTO.getYear()));
             }
             if (searchDTO.getPrice() != null) {
                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("price"), searchDTO.getPrice()));
@@ -32,12 +39,12 @@ public class ProductSpecification {
                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("mileage"), searchDTO.getMileage()));
             }
             if (searchDTO.getFuelType() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("fuelType"), searchDTO.getFuelType()));
+                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("fuelType")), searchDTO.getFuelType()));
             }
             if (searchDTO.getTransmission() != null) {
-                predicate = cb.and(predicate, cb.equal(root.get("transmission"), searchDTO.getTransmission()));
+                predicate = cb.and(predicate,
+                        cb.equal(cb.lower(root.get("transmission")), searchDTO.getTransmission()));
             }
-
             return predicate;
         };
     }
