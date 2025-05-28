@@ -19,7 +19,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Ensure role is prefixed with "ROLE_" as Spring expects
+
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
@@ -51,5 +51,9 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Users getUser() {
+        return user;
     }
 }
