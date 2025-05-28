@@ -7,4 +7,6 @@ import com.example.JudahCars_Backend.Model.Users;
 @Repository
 public interface UserRepo extends JpaRepository<Users,Integer>{
 
+
+    Users findByEmail(String email);
 }
