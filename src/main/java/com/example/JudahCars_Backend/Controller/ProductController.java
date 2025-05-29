@@ -6,10 +6,12 @@ import com.example.JudahCars_Backend.DTO.ProductUpdateDTO;
 import com.example.JudahCars_Backend.Model.Product;
 import com.example.JudahCars_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -49,22 +51,24 @@ public class ProductController {
 
 
     @PostMapping("/products")
-    public String addProduct(@RequestBody ProductCreateDTO product){
-        System.out.println(product.toString());
+    public ResponseEntity<Map<String, String>> addProduct(@RequestBody ProductCreateDTO product){
         service.addProduct(product);
-        return "added";
+         Map<String, String> response = Map.of("message", "Product added successfully");
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/products/{id}")
-    public String removeProduct(@PathVariable int id){
+    public ResponseEntity<Map<String, String>> removeProduct(@PathVariable int id){
         service.removeProduct(id);
-        return "removed";
+        Map<String, String> response = Map.of("message", "Product removed successfully");
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/products/{id}")
-    public String updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
+    public ResponseEntity<Map<String, String>> updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
         service.updateProduct(id,product);
-        return "updated";
+        Map<String, String> response = Map.of("message", "Product updated successfully");
+        return ResponseEntity.ok(response);
     }
 
 

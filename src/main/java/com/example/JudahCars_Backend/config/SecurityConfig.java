@@ -61,10 +61,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration source = new CorsConfiguration();
         source.setAllowedOrigins(List.of("http://localhost:5173")); // Your React app URL
-        source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","PATCH", "OPTIONS"));
         source.setAllowCredentials(true);
         source.setAllowedHeaders(List.of("Content-Type", "Authorization")); // Allow these headers
-        source.setExposedHeaders(List.of("Authorization")); // 👈 This is key!
+        source.setExposedHeaders(List.of("Authorization")); 
 
         UrlBasedCorsConfigurationSource source2 = new UrlBasedCorsConfigurationSource();
         source2.registerCorsConfiguration("/**", source);

@@ -63,20 +63,20 @@ public class ProductService {
         Product product = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        if (dto.getType() != null)product.setType(dto.getType());
-        if (dto.getMake() != null) product.setMake(dto.getMake());
-        if (dto.getModel() != null) product.setModel(dto.getModel());
+        if (dto.getType() != null && !dto.getType().isEmpty())product.setType(dto.getType());
+        if (dto.getMake() != null && !dto.getType().isEmpty()) product.setMake(dto.getMake());
+        if (dto.getModel() != null && !dto.getModel().isEmpty()) product.setModel(dto.getModel());
         if (dto.getYear() != null) product.setYear(dto.getYear());
         if (dto.getPrice() != null) product.setPrice(dto.getPrice());
         if (dto.getMileage() != null) product.setMileage(dto.getMileage());
-        if (dto.getFuelType() != null) product.setFuelType(dto.getFuelType());
-        if (dto.getTransmission() != null) product.setTransmission(dto.getTransmission());
-        if (dto.getDescription() != null) product.setDescription(dto.getDescription());
-        if (dto.getLocation() != null) product.setLocation(dto.getLocation());
-        if (dto.getImageUrl1() != null) product.setImageUrl1(dto.getImageUrl1());
-        if (dto.getImageUrl2() != null) product.setImageUrl2(dto.getImageUrl2());
-        if (dto.getImageUrl3() != null) product.setImageUrl3(dto.getImageUrl3());
-        if (dto.getSketchfabEmbed() != null) product.setSketchfabEmbed(dto.getSketchfabEmbed());
+        if (dto.getFuelType() != null && !dto.getFuelType().isEmpty()) product.setFuelType(dto.getFuelType());
+        if (dto.getTransmission() != null && !dto.getTransmission().isEmpty()) product.setTransmission(dto.getTransmission());
+        if (dto.getDescription() != null && !dto.getDescription().isEmpty()) product.setDescription(dto.getDescription());
+        if (dto.getLocation() != null && !dto.getLocation().isEmpty()) product.setLocation(dto.getLocation());
+        if (dto.getImageUrl1() != null && !dto.getImageUrl1().isEmpty()) product.setImageUrl1(dto.getImageUrl1());
+        if (dto.getImageUrl2() != null && !dto.getImageUrl2().isEmpty()) product.setImageUrl2(dto.getImageUrl2());
+        if (dto.getImageUrl3() != null && !dto.getImageUrl3().isEmpty()) product.setImageUrl3(dto.getImageUrl3());
+        if (dto.getSketchfabEmbed() != null && !dto.getSketchfabEmbed().isEmpty()) product.setSketchfabEmbed(dto.getSketchfabEmbed());
 
         repo.save(product);
     }
