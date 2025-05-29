@@ -1,5 +1,6 @@
 package com.example.JudahCars_Backend.config;
 
+import com.example.JudahCars_Backend.JWT.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,19 +32,19 @@ public class SecurityConfig {
     UserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/api/products").permitAll() // Allow only GET for products
-                .requestMatchers("api/user/login","api/user/register").permitAll() // Allow any method on /login
+                .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                .requestMatchers("/api/user/login", "/api/user/register").permitAll()
                 .anyRequest().authenticated()
         );
-
-        http.httpBasic(Customizer.withDefaults());
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -56,15 +58,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration source = new CorsConfiguration();
-        source.setAllowedOrigins(List.of("http://localhost:5173"));
-        source.setAllowedMethods(List.of("GET","POST","PUT","DELETE"));
+        source.setAllowedOrigins(List.of("http://localhost:5173")); // Your React app URL
+        source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         source.setAllowCredentials(true);
-        source.setAllowedHeaders(List.of("*"));
+        source.setAllowedHeaders(List.of("Content-Type", "Authorization")); // Allow these headers
+        source.setExposedHeaders(List.of("Authorization")); // 👈 This is key!
+
         UrlBasedCorsConfigurationSource source2 = new UrlBasedCorsConfigurationSource();
         source2.registerCorsConfiguration("/**", source);
-
         return source2;
     }
     @Bean

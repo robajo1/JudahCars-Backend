@@ -22,20 +22,14 @@ import org.springframework.security.core.AuthenticationException;
 public class UserController {
     @Autowired
     UsersService usersService;
-
-
     @PostMapping("/register")
     public ResponseEntity<?> newUser(@RequestBody UserCreateDTO user){
         Users newUser = usersService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
-
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         return usersService.loginUser(loginRequest);
 
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.example.JudahCars_Backend.Service;
 
 import com.example.JudahCars_Backend.DTO.LoginRequest;
 import com.example.JudahCars_Backend.DTO.UserCreateDTO;
+import com.example.JudahCars_Backend.JWT.JwtUtils;
 import com.example.JudahCars_Backend.Model.UserPrincipal;
 import com.example.JudahCars_Backend.Model.Users;
 import com.example.JudahCars_Backend.Repository.UserRepo;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsersService {
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private UserRepo userRepo;
 
     @Autowired
@@ -24,7 +28,6 @@ public class UsersService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     public Users addUser(UserCreateDTO dto) {
         Users user = new Users();
         user.setEmail(dto.getEmail());
@@ -35,6 +38,7 @@ public class UsersService {
 
         return userRepo.save(user);
     }
+
 
     public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
         try {
@@ -49,7 +53,12 @@ public class UsersService {
             Users user = userPrincipal.getUser();
             user.setPassword(null);
 
-            return ResponseEntity.ok(user);
+            String token = jwtUtils.generateToken(user.getEmail());
+
+
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + token)
+                    .body(user);
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid email or password");
