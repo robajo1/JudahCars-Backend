@@ -80,4 +80,8 @@ public class ProductService {
 
         repo.save(product);
     }
+
+    public List<Product> searchSellerProducts(Integer sellerid) {
+       return repo.findAllBySeller_UserId(sellerid);
+    }
 }

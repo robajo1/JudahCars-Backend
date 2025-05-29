@@ -41,10 +41,16 @@ public class ProductController {
         return input.toLowerCase();
     }
 
+    @GetMapping("/products/{sellerid}")
+    public List<Product> searchSellerProducts(@PathVariable Integer sellerid){
+        return service.searchSellerProducts(sellerid);
+    }
+
 
 
     @PostMapping("/products")
     public String addProduct(@RequestBody ProductCreateDTO product){
+        System.out.println(product.toString());
         service.addProduct(product);
         return "added";
     }
