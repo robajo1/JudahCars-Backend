@@ -55,4 +55,8 @@ public class MessageService {
     public List<Conversation> getconversation(Integer sellerid) {
         return conRepo.findAllBySeller_UserId(sellerid);
     }
+
+    public List<Message> getConversationMessaged(Integer conversationid) {
+        return msgRepo.findByConversation_Id(conversationid);
+    }
 }

@@ -21,6 +21,10 @@ public class Message {
     @JoinColumn(name = "receiver_id", referencedColumnName = "userId")
     private Users receiver;
 
+    @ManyToOne
+    @JoinColumn(name = "conversation_id", referencedColumnName = "id")
+    private Conversation conversation;
+
     public Message(Integer messageId, String messageText, LocalDateTime sentAt, Users sender, Users receiver) {
         this.messageId = messageId;
         this.messageText = messageText;
