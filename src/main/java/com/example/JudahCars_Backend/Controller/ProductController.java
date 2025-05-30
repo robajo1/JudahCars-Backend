@@ -31,9 +31,10 @@ public class ProductController {
             @RequestParam(required = false) String fuelType,
             @RequestParam(required = false) String transmission,
             @RequestParam(required = false) String type,
+            @RequestParam(required = false) String location,
             @RequestParam(required = false) String query
     ) {
-        ProductSearchDTO dto = new ProductSearchDTO(toProperCase(make), toProperCase(model),toProperCase(query), year, price, mileage, toProperCase(fuelType), toProperCase(transmission),type == null ? type : type.toLowerCase());
+        ProductSearchDTO dto = new ProductSearchDTO(toProperCase(make), toProperCase(model),toProperCase(query), year, price, mileage, toProperCase(fuelType), toProperCase(transmission),toProperCase(type),toProperCase(location));
         return service.searchProducts(dto);
     }
     private static String toProperCase(String input) {
@@ -65,10 +66,9 @@ public class ProductController {
     }
 
     @PatchMapping("/products/{id}")
-    public ResponseEntity<Map<String, String>> updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
-        service.updateProduct(id,product);
-        Map<String, String> response = Map.of("message", "Product updated successfully");
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Product> updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
+        Product updated = service.updateProduct(id, product);
+        return ResponseEntity.ok(updated);
     }
 
 

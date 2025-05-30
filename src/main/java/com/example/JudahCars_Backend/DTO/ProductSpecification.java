@@ -30,20 +30,26 @@ public class ProductSpecification {
                 predicate = cb.and(predicate, combinedLikePredicate);
             }
             if (searchDTO.getYear() != null) {
-                predicate = cb.and(predicate, cb.equal(cb.lower(root.get("year")), searchDTO.getYear()));
+                predicate = cb.and(predicate, cb.equal(root.get("year"), searchDTO.getYear()));
             }
             if (searchDTO.getPrice() != null) {
+                System.out.println("price: "+ searchDTO.getPrice());
                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("price"), searchDTO.getPrice()));
             }
             if (searchDTO.getMileage() != null) {
+                System.out.println("Mileage filter applied: " + searchDTO.getMileage());
                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("mileage"), searchDTO.getMileage()));
             }
             if (searchDTO.getFuelType() != null) {
+                System.out.println(root.get("fuelType"));
                 predicate = cb.and(predicate, cb.equal(cb.lower(root.get("fuelType")), searchDTO.getFuelType()));
             }
             if (searchDTO.getTransmission() != null) {
                 predicate = cb.and(predicate,
                         cb.equal(cb.lower(root.get("transmission")), searchDTO.getTransmission()));
+            }
+            if (searchDTO.getLoaction() != null) {
+                predicate = cb.and(predicate,cb.equal(cb.lower(root.get("location")), searchDTO.getLoaction()));
             }
             return predicate;
         };

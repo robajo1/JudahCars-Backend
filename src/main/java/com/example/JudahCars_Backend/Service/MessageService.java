@@ -1,13 +1,13 @@
 package com.example.JudahCars_Backend.Service;
 
 import com.example.JudahCars_Backend.DTO.SendMessageDTO;
+import com.example.JudahCars_Backend.Exception.ResourceNotFoundException;
 import com.example.JudahCars_Backend.Model.Conversation;
 import com.example.JudahCars_Backend.Model.Message;
 import com.example.JudahCars_Backend.Model.Users;
 import com.example.JudahCars_Backend.Repository.ConversationRepo;
 import com.example.JudahCars_Backend.Repository.MessageRepo;
 import com.example.JudahCars_Backend.Repository.UserRepo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +23,15 @@ public class MessageService {
     @Autowired
     ConversationRepo conRepo;
 
-
-
     public List<Message> getMessages(Integer buyerId, Integer sellerId) {
-        return msgRepo.findBySender_UserIdAndReceiver_UserId(buyerId,sellerId);
+        return msgRepo.findBySender_UserIdAndReceiver_UserId(buyerId, sellerId);
     }
 
     public void sendMessage(SendMessageDTO msgDto) {
-        Users sender = userRepo.findById(msgDto.getSenderId()).orElseThrow();
-        Users reciever = userRepo.findById(msgDto.getRecieverId()).orElseThrow();
+        Users sender = userRepo.findById(msgDto.getSenderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sender not found"));
+        Users reciever = userRepo.findById(msgDto.getRecieverId())
+                .orElseThrow(() -> new ResourceNotFoundException("Receiver not found"));
 
         Message msg = new Message();
         msg.setMessageText(msgDto.getMessageText());
@@ -45,9 +45,6 @@ public class MessageService {
             newCon.setSeller(reciever);
             return conRepo.save(newCon);
         });
-
-
-
         msgRepo.save(msg);
     }
 

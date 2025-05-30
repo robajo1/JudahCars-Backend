@@ -13,8 +13,10 @@ public class ProductSearchDTO {
     private String fuelType;
     private String transmission;
     private String type;
+    private String loaction;
 
-    public ProductSearchDTO(String make, String model,String query, Integer year, BigDecimal price, Integer mileage, String fuelType, String transmission, String type) {
+    
+    public ProductSearchDTO(String make, String model,String query, Integer year, BigDecimal price, Integer mileage, String fuelType, String transmission, String type, String location) {
         this.make = make;
         this.type=type;
         this.model = model;
@@ -24,8 +26,16 @@ public class ProductSearchDTO {
         this.mileage = mileage;
         this.fuelType = fuelType;
         this.transmission = transmission;
+        this.loaction = location;
+    }
+    
+    public String getLoaction() {
+        return loaction;
     }
 
+    public void setLoaction(String loaction) {
+        this.loaction = loaction;
+    }
     public String getType() {
         return type;
     }
