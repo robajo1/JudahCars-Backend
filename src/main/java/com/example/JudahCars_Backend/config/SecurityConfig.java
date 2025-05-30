@@ -37,9 +37,10 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
 //                .requestMatchers("/api/messages","/api/conversations/**").permitAll()
-                .requestMatchers("/api/user/login", "/api/user/register").permitAll()
-                .anyRequest().authenticated()
+                        .requestMatchers("/api/user/login", "/api/user/register").permitAll()
+                    .anyRequest().authenticated()
         );
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
