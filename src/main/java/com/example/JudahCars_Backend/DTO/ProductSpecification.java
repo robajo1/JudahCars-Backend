@@ -41,15 +41,20 @@ public class ProductSpecification {
                 predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("mileage"), searchDTO.getMileage()));
             }
             if (searchDTO.getFuelType() != null) {
-                System.out.println(root.get("fuelType"));
                 predicate = cb.and(predicate, cb.equal(cb.lower(root.get("fuelType")), searchDTO.getFuelType()));
             }
             if (searchDTO.getTransmission() != null) {
                 predicate = cb.and(predicate,
                         cb.equal(cb.lower(root.get("transmission")), searchDTO.getTransmission()));
             }
+
             if (searchDTO.getLoaction() != null) {
-                predicate = cb.and(predicate,cb.equal(cb.lower(root.get("location")), searchDTO.getLoaction()));
+
+                predicate = cb.and(
+                        predicate,
+                        cb.like(cb.lower(root.get("location")), "%" + searchDTO.getLoaction().toLowerCase() + "%")
+                );
+
             }
             return predicate;
         };
