@@ -26,6 +26,7 @@ public class MessageController {
 
     @PostMapping("/messages")
     public String sendMessage(@RequestBody SendMessageDTO msgDto){
+        System.out.println(msgDto);
         msgService.sendMessage(msgDto);
         return "sent";
     }

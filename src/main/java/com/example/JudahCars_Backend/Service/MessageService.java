@@ -30,7 +30,6 @@ public class MessageService {
     }
 
     public void sendMessage(SendMessageDTO msgDto) {
-
         Users sender = userRepo.findById(msgDto.getSenderId()).orElseThrow();
         Users reciever = userRepo.findById(msgDto.getRecieverId()).orElseThrow();
 
