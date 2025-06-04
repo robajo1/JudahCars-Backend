@@ -20,13 +20,12 @@ public class MessageController {
         return msgService.getMessages(senderId,receiverId);
     }
     @GetMapping("/messages/{conversationid}")
-    public List<Message> getMessages(@PathVariable Integer conversationid){
-        return msgService.getConversationMessaged(conversationid);
+    public List<SendMessageDTO> getMessages(@PathVariable Integer conversationid){
+        return msgService.getConversationMessages(conversationid);
     }
 
     @PostMapping("/messages")
     public String sendMessage(@RequestBody SendMessageDTO msgDto){
-        System.out.println(msgDto);
         msgService.sendMessage(msgDto);
         return "sent";
     }

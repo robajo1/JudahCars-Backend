@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -58,7 +59,17 @@ public class MessageService {
         return conRepo.findAllBySeller_UserId(sellerid);
     }
 
-    public List<Message> getConversationMessaged(Integer conversationid) {
-        return msgRepo.findByConversation_Id(conversationid);
+    public List<SendMessageDTO> getConversationMessages(Integer conversationId) {
+        List<Message> messages = msgRepo.findByConversation_Id(conversationId);
+
+        return messages.stream()
+                .map(msg -> new SendMessageDTO(
+                        msg.getMessageText(),
+                        msg.getSentAt(),
+                        msg.getSender().getUserId(),
+                        msg.getReceiver().getUserId()
+                ))
+                .collect(Collectors.toList());
     }
+
 }
