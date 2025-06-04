@@ -11,4 +11,6 @@ public interface ConversationRepo extends JpaRepository<Conversation,Long> {
     List<Conversation> findAllBySeller_UserId(Integer sellerid);
 
     Optional<Conversation> findByBuyerAndSeller(Users sender, Users reciever);
+
+    List<Conversation> findByBuyer_UserIdAndSeller_UserId(Integer buyerId, Integer sellerId);
 }

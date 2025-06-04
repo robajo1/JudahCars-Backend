@@ -24,8 +24,21 @@ public class MessageService {
     @Autowired
     ConversationRepo conRepo;
 
-    public List<Message> getMessages(Integer buyerId, Integer sellerId) {
-        return msgRepo.findBySender_UserIdAndReceiver_UserId(buyerId, sellerId);
+    public List<SendMessageDTO> getMessages(Integer buyerId, Integer sellerId) {
+
+        List<Conversation> c = conRepo.findByBuyer_UserIdAndSeller_UserId(sellerId,buyerId);
+
+        List<Message> messages = msgRepo.findByConversation_Id(Math.toIntExact(c.get(0).getId()));
+
+        return messages.stream()
+                .map(msg -> new SendMessageDTO(
+                        msg.getMessageText(),
+                        msg.getSentAt(),
+                        msg.getSender().getUserId(),
+                        msg.getReceiver().getUserId()
+                ))
+                .collect(Collectors.toList());
+
     }
 
     public void sendMessage(SendMessageDTO msgDto) {
