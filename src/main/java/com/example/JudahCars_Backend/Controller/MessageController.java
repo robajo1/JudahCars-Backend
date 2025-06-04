@@ -16,9 +16,10 @@ public class MessageController {
     MessageService msgService;
 
     @GetMapping("/messages")
-    public List<Message> getMessages(@RequestParam Integer senderId , @RequestParam Integer receiverId){
+    public List<SendMessageDTO> getMessages(@RequestParam Integer senderId , @RequestParam Integer receiverId){
         return msgService.getMessages(senderId,receiverId);
     }
+
     @GetMapping("/messages/{conversationid}")
     public List<SendMessageDTO> getMessages(@PathVariable Integer conversationid){
         return msgService.getConversationMessages(conversationid);
