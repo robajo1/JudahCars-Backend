@@ -25,12 +25,20 @@ public class Message {
     @JoinColumn(name = "conversation_id", referencedColumnName = "id")
     private Conversation conversation;
 
+
     public Message(Integer messageId, String messageText, LocalDateTime sentAt, Users sender, Users receiver) {
         this.messageId = messageId;
         this.messageText = messageText;
         this.sentAt = sentAt;
         this.sender = sender;
         this.receiver = receiver;
+    }
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
 
     public Message() {

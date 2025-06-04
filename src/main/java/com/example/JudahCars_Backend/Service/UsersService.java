@@ -30,6 +30,7 @@ public class UsersService {
     private AuthenticationManager authenticationManager;
     public Users addUser(UserCreateDTO dto) {
         Users user = new Users();
+
         user.setEmail(dto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
         user.setRole(dto.getRole());

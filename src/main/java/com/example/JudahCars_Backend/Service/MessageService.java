@@ -38,13 +38,19 @@ public class MessageService {
         msg.setSentAt(msgDto.getSentAt());
         msg.setReceiver(reciever);
         msg.setSender(sender);
+
         Optional<Conversation> optionalCon = conRepo.findByBuyerAndSeller(sender, reciever);
+        if(optionalCon.isEmpty()){
+            optionalCon = conRepo.findByBuyerAndSeller(reciever,sender);
+        }
         Conversation con = optionalCon.orElseGet(() -> {
             Conversation newCon = new Conversation();
             newCon.setBuyer(sender);
             newCon.setSeller(reciever);
             return conRepo.save(newCon);
         });
+
+        msg.setConversation(con);
         msgRepo.save(msg);
     }
 

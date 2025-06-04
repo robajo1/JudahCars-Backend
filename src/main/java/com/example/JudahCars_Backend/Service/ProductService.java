@@ -31,6 +31,7 @@ public class ProductService {
 
     public void addProduct(ProductCreateDTO dto) {
         Product product = new Product();
+
         product.setType(dto.getType());
         product.setMake(dto.getMake());
         product.setModel(dto.getModel());
@@ -48,7 +49,11 @@ public class ProductService {
 
         Users seller = userRepo.findById(dto.getSellerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Seller not found"));
+
+
         product.setSeller(seller);
+
+
         repo.save(product);
     }
 
@@ -59,6 +64,7 @@ public class ProductService {
     }
 
     public Product updateProduct(int id, ProductUpdateDTO dto) {
+
         Product product = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 

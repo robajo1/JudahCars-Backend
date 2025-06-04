@@ -11,9 +11,5 @@ import java.util.List;
 @Repository
 public interface ProductRepo extends JpaRepository<Product,Integer>, JpaSpecificationExecutor<Product> {
 
-
-
-
-
     List<Product> findAllBySeller_UserId(Integer userId);
 }
