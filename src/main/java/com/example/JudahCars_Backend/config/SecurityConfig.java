@@ -36,20 +36,20 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
-                .requestMatchers("/api/messages","/api/conversations/**").permitAll()
-                .requestMatchers("/chat.sendMessage","/ws/**","/ws").permitAll()
-
-                        .requestMatchers("/api/user/login", "/api/user/register").permitAll()
-                    .anyRequest().authenticated()
-        );
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
+                .permitAll()
+                .requestMatchers("/api/messages", "/api/conversations/**").permitAll()
+                .requestMatchers("/chat.sendMessage", "/ws/**", "/ws").permitAll()
+                .requestMatchers("/api/user/login", "/api/user/register").permitAll()
+                .requestMatchers("/api/payment").permitAll() 
+                .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
@@ -57,22 +57,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration source = new CorsConfiguration();
         source.setAllowedOrigins(List.of("http://localhost:5173")); // Your React app URL
-        source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","PATCH", "OPTIONS"));
+        source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         source.setAllowCredentials(true);
         source.setAllowedHeaders(List.of("Content-Type", "Authorization")); // Allow these headers
-        source.setExposedHeaders(List.of("Authorization")); 
+        source.setExposedHeaders(List.of("Authorization"));
 
         UrlBasedCorsConfigurationSource source2 = new UrlBasedCorsConfigurationSource();
         source2.registerCorsConfiguration("/**", source);
         return source2;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
