@@ -26,6 +26,8 @@ public class ProductService {
 
     public List<Product> searchProducts(ProductSearchDTO searchDTO) {
         Specification<Product> spec = ProductSpecification.getProductsByFilter(searchDTO);
+        System.out.println("max: "+searchDTO.getMaxPrice());
+        System.out.println("min: "+searchDTO.getMinPrice());
         return repo.findAll(spec);
     }
 

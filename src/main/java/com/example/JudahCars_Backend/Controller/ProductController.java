@@ -20,23 +20,36 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-
     @GetMapping("/products")
     public List<Product> searchProducts(
             @RequestParam(required = false) String make,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) BigDecimal price,
-            @RequestParam(required = false) Integer mileage,
             @RequestParam(required = false) String fuelType,
             @RequestParam(required = false) String transmission,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) String query
-    ) {
-        ProductSearchDTO dto = new ProductSearchDTO(toProperCase(make), toProperCase(model),toProperCase(query), year, price, mileage, toProperCase(fuelType), toProperCase(transmission),toProperCase(type),toProperCase(location));
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Integer minMileage,
+            @RequestParam(required = false) Integer maxMileage) {
+        ProductSearchDTO dto = new ProductSearchDTO(
+                toProperCase(make),
+                toProperCase(model),
+                toProperCase(query),
+                year,
+                toProperCase(fuelType),
+                toProperCase(transmission),
+                toProperCase(type),
+                toProperCase(location),
+                minPrice,
+                maxPrice,
+                minMileage,
+                maxMileage);
         return service.searchProducts(dto);
     }
+
     private static String toProperCase(String input) {
         if (input == null || input.isEmpty()) {
             return input;
@@ -45,28 +58,26 @@ public class ProductController {
     }
 
     @GetMapping("/products/{sellerid}")
-    public List<Product> searchSellerProducts(@PathVariable Integer sellerid){
+    public List<Product> searchSellerProducts(@PathVariable Integer sellerid) {
         return service.searchSellerProducts(sellerid);
     }
 
-
-
     @PostMapping("/products")
-    public ResponseEntity<Map<String, String>> addProduct(@RequestBody ProductCreateDTO product){
+    public ResponseEntity<Map<String, String>> addProduct(@RequestBody ProductCreateDTO product) {
         service.addProduct(product);
-         Map<String, String> response = Map.of("message", "Product added successfully");
+        Map<String, String> response = Map.of("message", "Product added successfully");
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Map<String, String>> removeProduct(@PathVariable int id){
+    public ResponseEntity<Map<String, String>> removeProduct(@PathVariable int id) {
         service.removeProduct(id);
         Map<String, String> response = Map.of("message", "Product removed successfully");
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable int id,@RequestBody ProductUpdateDTO product){
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody ProductUpdateDTO product) {
         Product updated = service.updateProduct(id, product);
         return ResponseEntity.ok(updated);
     }

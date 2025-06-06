@@ -32,14 +32,23 @@ public class ProductSpecification {
             if (searchDTO.getYear() != null) {
                 predicate = cb.and(predicate, cb.equal(root.get("year"), searchDTO.getYear()));
             }
-            if (searchDTO.getPrice() != null) {
-                System.out.println("price: "+ searchDTO.getPrice());
-                predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("price"), searchDTO.getPrice()));
+
+            // Price range filter
+            if (searchDTO.getMinPrice() != null) {
+                predicate = cb.and(predicate, cb.greaterThanOrEqualTo(root.get("price"), searchDTO.getMinPrice()));
             }
-            if (searchDTO.getMileage() != null) {
-                System.out.println("Mileage filter applied: " + searchDTO.getMileage());
-                predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("mileage"), searchDTO.getMileage()));
+            if (searchDTO.getMaxPrice() != null) {
+                predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("price"), searchDTO.getMaxPrice()));
             }
+
+            // Mileage range filter
+            if (searchDTO.getMinMileage() != null) {
+                predicate = cb.and(predicate, cb.greaterThanOrEqualTo(root.get("mileage"), searchDTO.getMinMileage()));
+            }
+            if (searchDTO.getMaxMileage() != null) {
+                predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("mileage"), searchDTO.getMaxMileage()));
+            }
+
             if (searchDTO.getFuelType() != null) {
                 predicate = cb.and(predicate, cb.equal(cb.lower(root.get("fuelType")), searchDTO.getFuelType()));
             }
@@ -48,11 +57,11 @@ public class ProductSpecification {
                         cb.equal(cb.lower(root.get("transmission")), searchDTO.getTransmission()));
             }
 
-            if (searchDTO.getLoaction() != null) {
+            if (searchDTO.getLocation() != null) {
 
                 predicate = cb.and(
                         predicate,
-                        cb.like(cb.lower(root.get("location")), "%" + searchDTO.getLoaction().toLowerCase() + "%")
+                        cb.like(cb.lower(root.get("location")), "%" + searchDTO.getLocation().toLowerCase() + "%")
                 );
 
             }
