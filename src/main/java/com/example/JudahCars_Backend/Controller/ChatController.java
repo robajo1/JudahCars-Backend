@@ -1,7 +1,6 @@
 package com.example.JudahCars_Backend.Controller;
 
 import com.example.JudahCars_Backend.DTO.SendMessageDTO;
-import com.example.JudahCars_Backend.Model.Message;
 import com.example.JudahCars_Backend.Service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,13 +20,8 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage") // /app/chat.sendMessage
     public void sendMessage(SendMessageDTO messageDTO) {
 
-
-
-
-
         messagingTemplate.convertAndSend("/topic/messages/" + messageDTO.getRecieverId(), messageDTO);
         messagingTemplate.convertAndSend("/topic/messages/" + messageDTO.getSenderId(), messageDTO);
-
 
         messageService.sendMessage(messageDTO);
     }

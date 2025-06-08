@@ -43,7 +43,6 @@ public class PaymentService {
         body.put("customization", customization);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-        System.out.println(request);
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(CHAPA_API_URL, request, Map.class);
 

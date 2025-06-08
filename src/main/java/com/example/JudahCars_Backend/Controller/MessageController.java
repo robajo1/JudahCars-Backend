@@ -2,7 +2,6 @@ package com.example.JudahCars_Backend.Controller;
 
 import com.example.JudahCars_Backend.DTO.SendMessageDTO;
 import com.example.JudahCars_Backend.Model.Conversation;
-import com.example.JudahCars_Backend.Model.Message;
 import com.example.JudahCars_Backend.Service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,7 @@
 package com.example.JudahCars_Backend.Repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.example.JudahCars_Backend.Model.Users;
@@ -8,5 +10,6 @@ import com.example.JudahCars_Backend.Model.Users;
 public interface UserRepo extends JpaRepository<Users,Integer>{
 
 
-    Users findByEmail(String email);
+    
+   Optional<Users> findByEmail(String email);
 }
