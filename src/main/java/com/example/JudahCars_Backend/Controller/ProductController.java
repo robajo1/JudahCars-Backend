@@ -8,6 +8,10 @@ import com.example.JudahCars_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.example.JudahCars_Backend.Repository.UserRepo;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,6 +23,8 @@ import java.util.Map;
 public class ProductController {
     @Autowired
     private ProductService service;
+    @Autowired
+    private UserRepo userRepo;
 
     @GetMapping("/products")
     public List<Product> searchProducts(
@@ -58,8 +64,14 @@ public class ProductController {
     }
 
     @GetMapping("/products/{sellerid}")
-    public List<Product> searchSellerProducts(@PathVariable Integer sellerid) {
-        return service.searchSellerProducts(sellerid);
+    public ResponseEntity<?> searchSellerProducts(@PathVariable Integer sellerid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        var userOpt = userRepo.findByEmail(email);
+        if (userOpt.isEmpty() || !userOpt.get().getUserId().equals(sellerid)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+        return ResponseEntity.ok(service.searchSellerProducts(sellerid));
     }
 
     @PostMapping("/products")

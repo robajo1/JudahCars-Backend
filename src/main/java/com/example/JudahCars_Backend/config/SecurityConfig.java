@@ -41,7 +41,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/messages", "/api/conversations/**").permitAll()
                 .requestMatchers("/chat.sendMessage", "/ws/**", "/ws").permitAll()
                 .requestMatchers("/api/user/login", "/api/user/register").permitAll()
-                .requestMatchers("/api/payment").permitAll() 
+                .requestMatchers("/api/payment").permitAll()
+                // Seller-only endpoints
+                .requestMatchers(HttpMethod.POST, "/api/products").hasAuthority("ROLE_SELLER")
+                .requestMatchers(HttpMethod.DELETE, "/api/products/{id}").hasAuthority("ROLE_SELLER")
+                .requestMatchers(HttpMethod.PATCH, "/api/products/{id}").hasAuthority("ROLE_SELLER")
+                .requestMatchers(HttpMethod.GET, "/api/products/{sellerid}").hasAuthority("ROLE_SELLER")
+                // Any other authenticated request
                 .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
