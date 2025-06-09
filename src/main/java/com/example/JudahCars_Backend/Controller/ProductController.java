@@ -8,6 +8,7 @@ import com.example.JudahCars_Backend.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.JudahCars_Backend.Repository.UserRepo;
@@ -82,6 +83,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
+    @PreAuthorize("@productService.isOwner(#id)")
     public ResponseEntity<Map<String, String>> removeProduct(@PathVariable int id) {
         service.removeProduct(id);
         Map<String, String> response = Map.of("message", "Product removed successfully");
@@ -89,6 +91,7 @@ public class ProductController {
     }
 
     @PatchMapping("/products/{id}")
+    @PreAuthorize("@productService.isOwner(#id)")
     public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody ProductUpdateDTO product) {
         Product updated = service.updateProduct(id, product);
         return ResponseEntity.ok(updated);

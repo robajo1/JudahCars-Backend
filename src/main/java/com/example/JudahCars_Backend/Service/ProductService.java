@@ -11,6 +11,8 @@ import com.example.JudahCars_Backend.Repository.ProductRepo;
 import com.example.JudahCars_Backend.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -92,5 +94,13 @@ public class ProductService {
             throw new ResourceNotFoundException("Seller not found");
         }
         return repo.findAllBySeller_UserId(sellerid);
+    }
+    public boolean isOwner(int productId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName(); // This is the user's email from your JwtFilter
+
+        return repo.findById(productId)
+                .map(product -> product.getSeller().getEmail().equals(currentUsername))
+                .orElse(false); // If product not found, deny access
     }
 }
