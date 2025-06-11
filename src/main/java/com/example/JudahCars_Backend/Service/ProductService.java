@@ -37,7 +37,7 @@ public class ProductService {
 
     @Caching(evict = {
             @CacheEvict(value = "searchProducts", allEntries = true),
-            @CacheEvict(value = "sellerProducts", key = "#dto.sellerId")
+            @CacheEvict(value = "sellerProducts", key = "#result.seller.userId")
     })
     public void addProduct(ProductCreateDTO dto) {
         Product product = new Product();
@@ -66,7 +66,7 @@ public class ProductService {
 
     @Caching(evict = {
             @CacheEvict(value = "searchProducts", allEntries = true),
-            @CacheEvict(value = "sellerProducts", key = "#dto.sellerId")
+            @CacheEvict(value = "sellerProducts", key = "#result.seller.userId")
     })
     public Product updateProduct(int id, ProductUpdateDTO dto) {
         Product product = repo.findById(id)
