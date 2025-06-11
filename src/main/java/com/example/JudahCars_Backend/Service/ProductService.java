@@ -90,12 +90,16 @@ public class ProductService {
         repo.save(product);
         return product;
     }
-
-    @CacheEvict(value = "searchProducts", allEntries = true)
-    public void removeProduct(int id) {
+//    @CacheEvict(value = "searchProducts", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "searchProducts", allEntries = true),
+            @CacheEvict(value = "sellerProducts", key = "#result.seller.userId")
+    })
+    public Product removeProduct(int id) {
         Product product = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-        repo.delete(product);
+         repo.delete(product);
+         return product;
     }
 
     @Cacheable(value = "sellerProducts", key = "#sellerid")
