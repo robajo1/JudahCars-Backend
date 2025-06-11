@@ -16,9 +16,27 @@ public class ProductSearchDTO {
     private Integer minMileage;
     private Integer maxMileage;
 
+    @Override
+    public String toString() {
+        return "ProductSearchDTO{" +
+                "make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", query='" + query + '\'' +
+                ", year=" + year +
+                ", fuelType='" + fuelType + '\'' +
+                ", transmission='" + transmission + '\'' +
+                ", type='" + type + '\'' +
+                ", location='" + location + '\'' +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", minMileage=" + minMileage +
+                ", maxMileage=" + maxMileage +
+                '}';
+    }
+
     public ProductSearchDTO(String make, String model, String query, Integer year,
-            String fuelType, String transmission, String type, String location,
-            BigDecimal minPrice, BigDecimal maxPrice, Integer minMileage, Integer maxMileage) {
+                            String fuelType, String transmission, String type, String location,
+                            BigDecimal minPrice, BigDecimal maxPrice, Integer minMileage, Integer maxMileage) {
         this.make = make;
         this.type = type;
         this.model = model;

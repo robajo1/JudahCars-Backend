@@ -10,6 +10,9 @@ import com.example.JudahCars_Backend.Model.Users;
 import com.example.JudahCars_Backend.Repository.ProductRepo;
 import com.example.JudahCars_Backend.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,11 +29,16 @@ public class ProductService {
     @Autowired
     private UserRepo userRepo;
 
+    @Cacheable(value = "searchProducts", key = "#searchDTO.toString()")
     public List<Product> searchProducts(ProductSearchDTO searchDTO) {
         Specification<Product> spec = ProductSpecification.getProductsByFilter(searchDTO);
         return repo.findAll(spec);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "searchProducts", allEntries = true),
+            @CacheEvict(value = "sellerProducts", key = "#dto.sellerId")
+    })
     public void addProduct(ProductCreateDTO dto) {
         Product product = new Product();
 
@@ -52,21 +60,15 @@ public class ProductService {
         Users seller = userRepo.findById(dto.getSellerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Seller not found"));
 
-
         product.setSeller(seller);
-
-
         repo.save(product);
     }
 
-    public void removeProduct(int id) {
-        Product product = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-        repo.delete(product);
-    }
-
+    @Caching(evict = {
+            @CacheEvict(value = "searchProducts", allEntries = true),
+            @CacheEvict(value = "sellerProducts", key = "#dto.sellerId")
+    })
     public Product updateProduct(int id, ProductUpdateDTO dto) {
-
         Product product = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
@@ -89,18 +91,27 @@ public class ProductService {
         return product;
     }
 
+    @CacheEvict(value = "searchProducts", allEntries = true)
+    public void removeProduct(int id) {
+        Product product = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        repo.delete(product);
+    }
+
+    @Cacheable(value = "sellerProducts", key = "#sellerid")
     public List<Product> searchSellerProducts(Integer sellerid) {
         if (!userRepo.existsById(sellerid)) {
             throw new ResourceNotFoundException("Seller not found");
         }
         return repo.findAllBySeller_UserId(sellerid);
     }
+
     public boolean isOwner(int productId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName(); // This is the user's email from your JwtFilter
+        String currentUsername = authentication.getName();
 
         return repo.findById(productId)
                 .map(product -> product.getSeller().getEmail().equals(currentUsername))
-                .orElse(false); // If product not found, deny access
+                .orElse(false);
     }
 }

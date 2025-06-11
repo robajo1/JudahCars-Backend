@@ -65,6 +65,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
+    @PreAuthorize("authentication.principal.user.userId == #product.sellerId")
     public ResponseEntity<Map<String, String>> addProduct(@RequestBody ProductCreateDTO product) {
         service.addProduct(product);
         Map<String, String> response = Map.of("message", "Product added successfully");
