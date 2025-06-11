@@ -39,7 +39,7 @@ public class ProductService {
             @CacheEvict(value = "searchProducts", allEntries = true),
             @CacheEvict(value = "sellerProducts", key = "#result.seller.userId")
     })
-    public void addProduct(ProductCreateDTO dto) {
+    public Product addProduct(ProductCreateDTO dto) {
         Product product = new Product();
 
         product.setType(dto.getType());
@@ -62,6 +62,7 @@ public class ProductService {
 
         product.setSeller(seller);
         repo.save(product);
+        return product;
     }
 
     @Caching(evict = {
