@@ -33,6 +33,7 @@ and so on......
 
 - Java 17+
 - Spring Boot
+- PostgreSQL
 - Maven
 - RESTful API
 - JSON
@@ -56,6 +57,12 @@ mvn clean install
 
 # Run the application
 mvn spring-boot:run
+
+# CREATE A DB NAMED JudahCars in PostgreSQL
+psql -U your_username -d postgres -c "CREATE DATABASE \"JudahCars\";"
+or
+CREATE DATABASE "JudahCars";
+
 ```
 
 The server will start at: `http://localhost:9090`
