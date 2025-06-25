@@ -1,6 +1,6 @@
 # JudahCars Backend
 
-This is the backend service for **JudahCars**(FrontEnd at https://github.com/robajo1/JudahCars ), a car-related platform built using **Spring Boot** and **Maven**. It provides RESTful APIs for managing features such as messaging, payments, and chats.
+This is the backend service for **JudahCars**(FrontEnd at https://github.com/robelnigusse/JudahCars ), a car-related platform built using **Spring Boot** and **Maven**. It provides RESTful APIs for managing features such as messaging, payments, and chats.
 
 ## 🚀 Features
 
